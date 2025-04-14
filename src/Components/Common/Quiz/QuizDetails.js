@@ -40,6 +40,7 @@ export default function QuizDetails() {
       passingPercentage: passingScore,
       courseId,
     };
+    console.log(quizData)
 
     try {
       const response = await createQuiz(quizData, token);
@@ -56,19 +57,19 @@ export default function QuizDetails() {
     <div className="px-7 py-5 bg-gray-5 border border-richblack-400 rounded-md">
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <div className="flex items-center gap-2">
-          <label className="text-richblack-900 text-[14px]">Duration :</label>
+          <label className="text-richblack-200 text-[14px]">Duration :</label>
           <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} className="bg-richblack-700 text-richblack-200 px-2 py-1 rounded-md w-16" />
           <span className="text-richblack-900 text-[14px]">min</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-richblack-900text-[14px]">Passing Score :</label>
+          <label className="text-richblack-200 text-[14px]">Passing Score :</label>
           <input type="number" value={passingScore} onChange={(e) => setPassingScore(e.target.value)} className="bg-richblack-700 text-richblack-200 px-2 py-1 rounded-md w-16" />
           <span className="text-richblack-900text-[14px]">%</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-richblack-900e text-[14px]">Total Marks :</label>
+          <label className="text-richblack-200 text-[14px]">Total Marks :</label>
           <input
             type="number"
             name="totalMarks"
@@ -76,7 +77,7 @@ export default function QuizDetails() {
             onChange={handleInputChange}
             className="bg-richblack-700 text-richblack-200 px-2 py-1 rounded-md w-16"
           />
-          <label className="text-richblack-900text-[14px]">Course ID :</label>
+          <label className="text-richblack-200 text-[14px]">Course ID :</label>
           <input type="text" value={courseId} onChange={(e) => setCourseId(e.target.value)} className="bg-richblack-700 text-richblack-200 px-2 py-1 rounded-md" />
         </div>
 
@@ -88,7 +89,7 @@ export default function QuizDetails() {
           <button
             type="button"
             onClick={handleNext}
-            className="text-richblack-900e bg-yellow-50 rounded-md px-4 py-2"
+            className="text-richblack-900 bg-yellow-50 rounded-md px-4 py-2"
           >
             Next (Submit Quiz)
           </button>
@@ -121,7 +122,7 @@ export default function QuizDetails() {
             />
           </div>
         ))} */}
-        <button onClick={addQuestion} type="button" className="text-richblack-900 bg-yellow-50 rounded-md px-4 py-2 w-fit">Add</button>
+        {/* <button onClick={addQuestion} type="button" className="text-richblack-900 bg-yellow-50 rounded-md px-4 py-2 w-fit">Add</button> */}
 
         <div className="flex gap-3 self-end">
           <button type="reset" className="text-[15px] text-richblack-900 bg-richblack-400 rounded-md px-4 py-2">Reset</button>

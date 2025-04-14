@@ -15,6 +15,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
     setQuestions(updatedQuestions);
   };
 
+  
   const addOption = () => {
     const updatedQuestions = [...questions];
     updatedQuestions[currentIndex].options.push("");
@@ -93,7 +94,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
       <button
         type="button"
         onClick={addOption}
-        className="text-[14px] text-white bg-yellow-50 rounded-md px-4 py-1 w-fit"
+        className="text-[14px] text-richblack-900 bg-yellow-50 rounded-md px-4 py-1 w-fit"
       >
         Add Option
       </button>
