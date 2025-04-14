@@ -12,10 +12,11 @@ axiosInstance.interceptors.response.use(
     }
 )
 export const apiConnector = (method, url, bodyData, headers, params) => {
+console.log("Body data : ", bodyData)
     return axiosInstance({
         method:`${method}`,
         url:`${url}`,
-        data: bodyData ? bodyData : null,
+        data: bodyData,
         headers: headers,
         params: params ? params : null,
     });

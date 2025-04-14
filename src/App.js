@@ -30,9 +30,13 @@ import Settings from "./Components/Cores/Dashboard/Settings/ProfileSetting";
 import AddCategory from "./Components/Cores/Dashboard/AdminPannel/AddCategory";
 import ManageCategories from "./Components/Cores/Dashboard/AdminPannel/ManageCategories";
 import CategoryRequests from "./Components/Cores/Dashboard/AdminPannel/CategoryRequests";
-import CategoryCourseDetails from "./Components/Cores/Dashboard/AdminPannel/CategoryCourseDetails";
+import CategoryCourseDetails from "./Components/Cores/Dashboard/AdminPannel/CatrgoryDetails";
 import QuizDetails from "./Components/Common/Quiz/QuizDetails";
-
+import QuizIntro from "./Components/Common/Quiz/QuizIntro";
+import QuizResult from "./Components/Common/Quiz/QuizResult";
+import QuizPage from "./Pages/Quiz";
+import CategoryRequestsByUser from "./Pages/CategoryRequestsByUser";
+import TakeQuiz from "./Components/Common/Quiz/TakeQuiz"
 
 function App() {
   //console.log("inside App");
@@ -63,6 +67,11 @@ function App() {
               <>
                 <Route path="/dashboard/enrolled-courses" element={<EnrolledCourses></EnrolledCourses>}></Route>
                 <Route path="/dashboard/cart" element={<Cart></Cart>}></Route>
+                
+                {/* <Route path="/quiz/quiz-intro/:courseId" element={<QuizIntro></QuizIntro>}></Route> */}
+                <Route path="/quiz/quiz-intro" element={<QuizIntro></QuizIntro>}></Route>
+                <Route path="/dashboard/takeQuiz/:id" element={<TakeQuiz></TakeQuiz>}></Route>
+                <Route path="/dashboard/quizResult" element={<QuizResult></QuizResult>}></Route>
               </>
             
             )
@@ -74,6 +83,10 @@ function App() {
                 <Route path="/dashboard/add-course" element={<NewCourse></NewCourse>}></Route>
                 <Route path="/dashboard/edit-course/:courseId" element={<EditCourse></EditCourse>}></Route>
                 <Route path="/dashboard/instructor" element={<Details></Details>}></Route>
+                <Route path="/dashboard/categoryRequestsByUser" element={<CategoryRequestsByUser></CategoryRequestsByUser>}></Route>
+                <Route path="/dashboard/takeQuiz/:id" element={<TakeQuiz></TakeQuiz>}></Route>
+                <Route path="/dashboard/quiz/:categoryQuizId?" element={<QuizPage></QuizPage>}></Route>
+                <Route path="/dashboard/quizResult" element={<QuizResult></QuizResult>}></Route>
               </>
             )
           
@@ -82,35 +95,40 @@ function App() {
               user != null && user.accountType === ACCOUNT_TYPE.ADMIN && (
                 <>
                   <Route path="dashboard/manageCategories" element={<ManageCategories></ManageCategories>}></Route>
-                  <Route path="dashboard/categoryCourseDetails/:categoryId" element={<CategoryCourseDetails></CategoryCourseDetails>}></Route>
+                  {/* <Route path="dashboard/categoryCourseDetails/:categoryId" element={<CategoryCourseDetails></CategoryCourseDetails>}></Route> */}
                   <Route path="dashboard/categoryRequests" element={<CategoryRequests></CategoryRequests>}></Route>
                   <Route path="dashboard/createCategory" element={<AddCategory></AddCategory>}></Route>
-                  <Route path="dashboard/categoryQuizDetails/:categoryId" element={<QuizDetails></QuizDetails>}></Route>
+                  <Route path="/dashboard/quiz/:categoryQuizId?" element={<QuizPage></QuizPage>}></Route>
                 </>
               )
           }
-            
           
-          
+         
         </Route>
         <Route path="/catalouge/:catagoryname" element={<Cataloug></Cataloug>}></Route>
         <Route path="course/:courseId" element={<CourseDetails></CourseDetails>}></Route>
+        <Route path="/:category/:categoryId/quiz/:categoryId" element={<QuizPage></QuizPage>}></Route>
        
         <Route path="*" element={<Error></Error>}></Route>
 
         <Route element={
-          <PrivateRoute>
-            <ViewCourse></ViewCourse>
-          </PrivateRoute>
-        }>
-        {
-          user!==null && user.accountType===ACCOUNT_TYPE.STUDENT &&
-          <>
-            <Route path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element=<VideoSection></VideoSection>></Route>
-          </>
-        }
-          
-        </Route>  
+              <PrivateRoute>
+                <ViewCourse/>
+              </PrivateRoute>
+
+            }>
+              {
+                user?.accountType===ACCOUNT_TYPE.STUDENT && (
+                  <>
+                  <Route path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element=<VideoSection></VideoSection>></Route>
+                    
+                  </>
+                )
+              }
+
+
+
+            </Route>
       </Routes>
 
 

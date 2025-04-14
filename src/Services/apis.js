@@ -50,7 +50,7 @@ export const courseEndpoints = {
     DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
     GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getAllDetailsofCourse",
     LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
-     CREATE_RATING_API: BASE_URL + "/course/createRatingAndReview",
+    CREATE_RATING_API: BASE_URL + "/course/createRatingAndReview",
 }
 
 export const ratingsEndpoints = {
@@ -67,7 +67,7 @@ export const contactusEndpoint = {
   
 export const categoryEndpoint = {
     CREATE_CATEGORY_API : BASE_URL + "/course/createCatagory",
-    ADD_CATEGORY_REQUEST_API : BASE_URL + "/categoryRequest/createCategoryRequest",
+    CREATE_CATEGORY_REQUEST_API : BASE_URL + "/categoryRequest/createCategoryRequest",
     UPDATE_CATEGORY_REQUEST_API : BASE_URL + "/categoryRequest/updateCategoryRequest",
     GET_CATEGORY_REQUEST_API : BASE_URL + "/categoryRequest/getCategoryRequest",
     DELETE_CATEGORY_REQUEST_API : BASE_URL + "/categoryRequest/deleteCategoryRequest",
@@ -87,6 +87,7 @@ export const quizEndPoint = {
     UPDATE_QUESTION_API : BASE_URL + "/quiz/updateQuestions",
     GET_QUESTION_API : BASE_URL + "/quiz/getAllQuestions",
     DELETE_QUESTION_API : BASE_URL + "/quiz/deleteQuestions",
+    
 }
 
 

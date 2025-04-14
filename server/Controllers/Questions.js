@@ -7,8 +7,6 @@ const Catagories = require("../Models/Catagories");
 exports.addQuestions = async(req, res) => {
    try{
       const {questions, quizId} = req.body;
-      
-      //console.log("Type of questions : ", typeof(questions))
       if(!quizId){
          return res.status(400).json({
             success : false,
@@ -25,7 +23,6 @@ exports.addQuestions = async(req, res) => {
       const invalidQuestion = questions.some((question) => {
         
          const { questionText, options, answer, marks, difficultyLevel } = question;
-         //console.log(questionText, options, difficultyLevel)
          return (
                  !questionText || !options || !Array.isArray(options) || options.length < 2 ||
                  !answer || !options.includes(answer) || 
@@ -33,7 +30,6 @@ exports.addQuestions = async(req, res) => {
                  marks == null
              );
          });
-
       if (invalidQuestion) {
          return res.status(400).json({
              success: false,
@@ -45,7 +41,7 @@ exports.addQuestions = async(req, res) => {
          const newQuestion = await Questions.create(question);
          return newQuestion._id;
      }));
-     
+
 
       const quiz = await Quiz.findByIdAndUpdate({_id : quizId}, {
         $push : {questions : { $each : questionList}}
@@ -56,7 +52,7 @@ exports.addQuestions = async(req, res) => {
       return res.status(200).json({
          success : true,
          message : "Questions added successfully into quiz",
-         data : quiz
+         data : questionList
       })
    }
    catch(err){
@@ -78,7 +74,7 @@ exports.UpdateQuestions = async(req, res) => {
             message : "Quiz Id is required"
          })
       }
-      if(!questions || !Array(questions) || questions.length < 1){
+      if(!questions || !Array.isArray(questions) || questions.length < 1){
          return res.status(400).json({
             success : false,
             message : "Questions must be array and atleas one question is required to update"
@@ -90,7 +86,7 @@ exports.UpdateQuestions = async(req, res) => {
             return res.status(400).json({
                success: false,
                message: "All questions must contains question id"
-           });
+            });
          }
          if(updates.options && (!Array.isArray(updates.options) || updates.options.length < 2)){
             return res.status(400).json({
@@ -104,14 +100,21 @@ exports.UpdateQuestions = async(req, res) => {
                message : "Difficulty level must be either easy, medium or hard"
             })
          }
-        
          
-
+         
+         
          const oldQuestion = await Questions.findById(new mongoose.Types.ObjectId(id));
+         if (!oldQuestion) {
+            return res.status(404).json({
+              success: false,
+              message: "Question not found",
+            });
+          }
+          
          oldQuestion.set(updates);
          await oldQuestion .save()
-
-     }
+         
+      }
 
      const updatedQuiz = await Quiz.findById(quizId).populate("questions").exec();
 
@@ -135,7 +138,6 @@ exports.UpdateQuestions = async(req, res) => {
 exports.deleteQuestions = async (req, res) => {
    try {
        const { questions, quizId } = req.body;
-
        if (!quizId) {
            return res.status(400).json({
                success: false,
@@ -175,7 +177,6 @@ exports.deleteQuestions = async (req, res) => {
        });
    }
 };
-
 
 exports.getAllQuestions = async (req, res) => {
    try{
