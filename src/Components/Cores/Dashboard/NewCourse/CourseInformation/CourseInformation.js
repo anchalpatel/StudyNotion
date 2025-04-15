@@ -74,7 +74,7 @@ function CourseInformation() {
         toast.error("You did not pass the quiz.");
       }
     } catch (error) {
-      console.error("Error occurred while getting result", error);
+      //console.error("Error occurred while getting result", error);
     }
   };
   const handleCategoryChange = (event) => {

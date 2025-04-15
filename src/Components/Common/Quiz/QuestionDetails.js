@@ -72,22 +72,22 @@ export default function QuestionDetails({ questions, setQuestions }) {
         onChange={(e) => handleInputChange("questionText", e.target.value)}
         className="bg-richblack-600 text-richblack-200 px-2 py-1 rounded-md min-h-[100px]"
       ></textarea>
-
-      <div className="flex items-center gap-2">
-        <label className="text-richblack-5 text-[14px]">Marks :</label>
+<div className="flex w-full gap-2 py-[10px]">
+      <div className="flex  items-center gap-2 w-[50%]">
+        <label className="text-richblack-5 text-[14px]  w-[50%]">Marks :</label>
         <input
           type="number"
           value={questions[currentIndex]?.marks || ""}
           onChange={(e) => handleInputChange("marks", e.target.value)}
-          className="bg-richblack-600 text-richblack-200 px-2 py-1 rounded-md w-16"
+          className="bg-richblack-600 text-richblack-200 w-[100%] px-2 py-1 rounded-md"
         />
       </div>
-      <div>
-        <label className="text-richblack-5 text-[14px]">Difficulty Level :</label>
+      <div className="w-full items-center flex gap-[10px]">
+        <label className="text-richblack-5 text-[14px] text-end w-[58%]">Difficulty Level :</label>
         <select
           value={questions[currentIndex]?.difficultyLevel || ""}
           onChange={(e) => handleInputChange("difficultyLevel", e.target.value)}
-          className="bg-richblack-600 text-richblack-200 px-4 py-2 rounded-md"
+          className="bg-richblack-600 text-richblack-200 px-4 w-[100%] py-2 rounded-md"
         >
           <option value="">Select Difficulty</option>
           <option value="easy">Easy</option>
@@ -95,9 +95,9 @@ export default function QuestionDetails({ questions, setQuestions }) {
           <option value="hard">Hard</option>
         </select>
       </div>
-
+      </div>
       {/* Options Container */}
-      <div className="grid grid-cols-2 gap-2 max-h-[100px] overflow-y-auto pr-2">
+      <div className="d-flex flex-col gap-2   pr-2">
         {questions[currentIndex]?.options.map((opt, index) => (
           <div key={index} className="flex gap-2 items-center">
             <label className="text-richblack-5 text-[14px]">{index + 1}:</label>
@@ -105,7 +105,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
               type="text"
               value={opt}
               onChange={(e) => handleOptionChange(index, e.target.value)}
-              className="bg-richblack-600 text-richblack-200 px-2 py-1 rounded-md w-full"
+              className="bg-richblack-600 text-richblack-200 px-2 py-1 mt-2 rounded-md w-full"
             />
             {questions[currentIndex].options.length > 1 && (
               <RiDeleteBinLine
@@ -120,7 +120,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
       <button
         type="button"
         onClick={addOption}
-        className="text-[14px] text-richblack-900 bg-yellow-50 rounded-md px-4 py-1 w-fit"
+        className="my-[10px] text-[14px] text-richblack-900 bg-yellow-50 rounded-md px-4 py-1 w-fit"
       >
         Add Option
       </button>
@@ -139,7 +139,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
         ))}
       </select>
 
-      <div className="flex gap-3 justify-between">
+      <div className="flex gap-3 justify-between py-3">
         <div className="flex items-center gap-2">
           <IoIosArrowDropleft
             onClick={() => currentIndex > 0 && navigateQuestion("prev")}
@@ -164,7 +164,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
                 : "cursor-pointer"}`}
           />
         </div>
-
+      <div className="flex gap-2">
         <button
           type="button"
           onClick={saveCurrentQuestion}
@@ -180,6 +180,7 @@ export default function QuestionDetails({ questions, setQuestions }) {
         >
           Add New Question
         </button>
+        </div>
       </div>
     </div>
   );

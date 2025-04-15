@@ -89,18 +89,18 @@ export default function QuizDetails() {
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <div className="flex justify-between">
           <div className="flex items-center gap-2">
-            <label className="text-white-900 text-[14px]">Duration :</label>
+            <label className="text-[#fff] text-[14px]">Duration :</label>
             <input
               type="number"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               className="bg-richblack-700 text-richblack-200 px-2 py-1 rounded-md w-16"
             />
-            <span className="text-white-900 text-[14px]">min</span>
+            <span className="text-[#fff] text-[14px]">Min</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="text-white-900 text-[14px]">Passing Score :</label>
+            <label className="text-[#fff] text-[14px]">Passing Score :</label>
             <input
               type="number"
               value={passingScore}
@@ -111,8 +111,8 @@ export default function QuizDetails() {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="text-white-900 text-[14px]">Total Marks :</label>
-            <input
+            <label className="text-[#fff] text-[14px]">Total Marks :</label>
+            <input 
               type="number"
               name="totalMarks"
               value={quizInfo.totalMarks}
@@ -130,8 +130,8 @@ export default function QuizDetails() {
           }
         />
 
-        <div className="flex justify-between">
-          <div className="flex gap-3 self-end">
+        <div className="flex justify-center items-center">
+          {/* <div className="flex gap-3 self-end">
             <button
               type="button"
               onClick={addQuestion}
@@ -145,13 +145,16 @@ export default function QuizDetails() {
             >
               Save
             </button>
-          </div>
+          </div> */}
           {
             !categoryId && (
               <div>
-                <button></button>
-                <button></button><button onClick={goBack} className='text-richblack-900 bg-yellow-200 text-[15px] rounded-md px-2 py-1'>Back</button>
-                          <button onClick={goNext} className='text-richblack-900 bg-yellow-200 text-[15px] rounded-md px-2 py-1 flex gap-1 justify-center items-center'>Next <MdOutlineNavigateNext></MdOutlineNavigateNext></button>
+                {/* <button></button> */}
+                {/* <button></button> */}
+                <div className="flex gap-2">
+                <button onClick={goBack} className='text-richblack-900 bg-yellow-200 text-[15px] rounded-md px-2 py-1'>Back</button>
+                <button onClick={goNext} className='text-richblack-900 bg-yellow-200 text-[15px] rounded-md px-2 py-1 flex gap-1 justify-center items-center'>Next <MdOutlineNavigateNext></MdOutlineNavigateNext></button>
+                </div>
               </div>  
             )
           }

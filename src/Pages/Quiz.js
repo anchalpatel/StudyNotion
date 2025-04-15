@@ -55,7 +55,7 @@ function QuizPage() {
   useEffect(() => {
     if (categoryQuizId) {
       fetchQuiz(categoryQuizId)
-    } else {
+    } else if(course && course.quiz){
       fetchQuiz(course.quiz._id)
     }
   }, [])
