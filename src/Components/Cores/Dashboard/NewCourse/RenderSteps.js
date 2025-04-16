@@ -59,9 +59,9 @@ function RenderSteps() {
         </div>
        
         <div>
-            {step===3 && <CourseInformation></CourseInformation>}
+            {step===1 && <CourseInformation></CourseInformation>}
             {step===2 && <CourseBuilder></CourseBuilder>}
-            {step===1 && <QuizPage></QuizPage>}
+            {step===3 && <QuizPage></QuizPage>}
             {step===4 && <Publish></Publish>}
         </div>
 

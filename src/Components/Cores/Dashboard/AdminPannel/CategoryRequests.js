@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { getCategoryRequestsForAdmin, updateCategoryRequestStatus } from '../../../../Services/Operations/Category';
+import { createCategory, getCategoryRequestsForAdmin, updateCategoryRequestStatus } from '../../../../Services/Operations/Category';
 import { useSelector } from 'react-redux';
 import { IoCheckmarkCircle, IoCloseCircle } from 'react-icons/io5';
 import { RiLoader4Line } from 'react-icons/ri';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import CategoryModal from './CategoryModal';
 
 export default function CategoryRequests() {
   const { token } = useSelector((state) => state.auth);
@@ -21,7 +22,7 @@ export default function CategoryRequests() {
     
     const handleCategoryCreation = async () => {
       try{
-        const result = await cerate(categoryName, categoryDescription, token);
+        const result = await createCategory(categoryName, categoryDescription, token);
         console.log("Printing result : ". result);
         if(!result.success){
           throw new Error(result.message);
