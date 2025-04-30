@@ -66,7 +66,7 @@ export default function QuizDetails() {
         console.log("Category quiz created response : ", response)
         dispatch(unsetCategoryId())
         nevigate(`/dashboard/quiz/${response.data.quiz._id}`)
-        alert("Quiz Created Successfully! for category");
+        //alert("Quiz Created Successfully! for category");
       } catch (error) {
         alert("Error creating quiz!");
       }
@@ -131,7 +131,7 @@ export default function QuizDetails() {
         />
 
         <div className="flex justify-center items-center">
-          {/* <div className="flex gap-3 self-end">
+          <div className="flex gap-3 self-end">
             <button
               type="button"
               onClick={addQuestion}
@@ -145,7 +145,7 @@ export default function QuizDetails() {
             >
               Save
             </button>
-          </div> */}
+          </div> 
           {
             !categoryId && (
               <div>

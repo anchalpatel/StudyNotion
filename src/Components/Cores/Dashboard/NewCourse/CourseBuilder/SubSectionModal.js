@@ -43,6 +43,9 @@ function SubSectionModal({
     }
   }, [])
 
+  useEffect(()=>{
+    console.log("Course updated successfully : ", course)
+  }, [course])
   function isFormUpdated(){
     const currentValues = getValues();
     console.log("Modal data : ", modalData);
@@ -56,129 +59,121 @@ function SubSectionModal({
     return false;
   }
 
-  async function handleEditSubSection(){
+  async function handleEditSubSection() {
     setLoading(true);
     const currentValues = getValues();
     const formData = new FormData();
-    const subSectionId = modalData._id
+  
     formData.append("sectionId", modalData.sectionId);
-    formData.append("subsectionId", subSectionId);
-
-    if(currentValues.lectureTitle !== modalData.title){
+    formData.append("subsectionId", modalData._id);
+  
+    if (currentValues.lectureTitle !== modalData.title) {
       formData.append("title", currentValues.lectureTitle);
     }
-    if(currentValues.lectureDesc !== modalData.description){
+    if (currentValues.lectureDesc !== modalData.description) {
       formData.append("description", currentValues.lectureDesc);
     }
-    if(currentValues.lectureVideourl !== modalData.videoFile){
+    if (currentValues.lectureVideourl !== modalData.videoFile) {
       formData.append("videoFile", currentValues.lectureVideourl);
     }
-
-    let result;
-
-    try{
-      result = await updateSubSection(formData, token);
-      
-      console.log("Printing result after updating subsection : ", result);
-
-    }catch(error){
-      console.error(error);
-      toast.error("Could not update sub section");
-    }
-
-    if(result){
+  
+    try {
+      const result = await updateSubSection(formData, token);
+      console.log("Updated subsection result:", result);
+  
       if (result) {
-        const updatedCourseContent = course.courceContent.map((section) => {
-            if (section._id === modalData.sectionId) {
-              return {
-                ...section,
-                subSections: section.subSection.map((subSec) => 
-                  subSec._id === result._id ? result : subSec
-                )
-              };
-            }
-            return section;
-        });
-    
-        const updatedCourse = { ...course, courceContent: updatedCourseContent };
-        console.log("Updated course:", updatedCourse);
+        // Replace the whole section
+        const updatedCourseContent = course.courceContent.map((section) =>
+          section._id === result._id ? result : section
+        );
+  
+        const updatedCourse = {
+          ...course,
+          courceContent: updatedCourseContent,
+        };
+  
+        console.log("✅ Updated course object before dispatch:", updatedCourse);
         dispatch(setCourse(updatedCourse));
-    }
-    
-    }
-    setLoading(false);
-    setModal(null);
-  }
-
-   async function submitHandler(data){
-    console.log("here");
-    setLoading(true);
-    if(view){
-      console.log("here");
-      return
-    }
-
-    if(edit){
-      console.log("here");
-      if(!isFormUpdated){
-        console.log("here");
-        return
+        toast.success("Lecture updated successfully");
       }
-      else{
-        console.log("here");
+    } catch (error) {
+      console.error("Update subsection error:", error);
+      toast.error("Could not update lecture");
+    } finally {
+      setLoading(false);
+      setModal(null);
+    }
+  }
+  
+
+  async function submitHandler(data) {
+    if (view) return;
+  
+    setLoading(true);
+  
+    // Handle edit case
+    if (edit) {
+      if (!isFormUpdated()) {
+        setLoading(false);
+        setModal(null);
+        return;
+      } else {
         handleEditSubSection();
         return;
       }
     }
-
-
+  
+    // Handle add case
     const formData = new FormData();
-    
+  
     formData.append("title", data.lectureTitle);
     formData.append("description", data.lectureDesc);
     formData.append("videoFile", data.lectureVideourl);
     formData.append("sectionId", modalData._id);
-    console.log("Printing videoUrl", JSON.stringify(data.lectureVideourl));
-    console.log("Printing Form data",typeof(formData.sectionId));
-    
-    console.log("Printing Form data", data.lectureVideourl);
-
-    let result;
-
-    try{
-      result = await createSubSection(formData, token);
-
-      console.log("Printing result after creating subSection", result);
-
-    }catch(error){
-      console.error(error);
-      toast.error("Could not create subsection")
-    }
-
-    if(result){
-      if (result) {
+  
+    try {
+      const result = await createSubSection(formData, token);
+      console.log("Result from createSubSection:", result);
+  
+      if (result && result.subSections) {
+        // Get the latest subsection that was added
+        const newSubsection = result.subSections[result.subSections.length - 1];
+  
+        // Update the specific section in course content
         const updatedCourseContent = course.courceContent.map((section) => {
-            if (section._id === modalData.sectionId) {
-                return {
-                  ...section,
-                  subSections: [...section.subSection, result]
-                };
-            }
-            return section;
+          if (section._id === modalData._id) {
+            return {
+              ...section,
+              subSections: [...(section.subSections || []), newSubsection],
+            };
+          }
+          return section;
         });
-    
-        const updatedCourse = { ...course, courceContent: updatedCourseContent };
-        console.log("Updated course:", updatedCourse);
+  
+        // Construct the updated course object
+        const updatedCourse = {
+          ...course,
+          courceContent: updatedCourseContent, // (you can rename this to courseContent everywhere if needed)
+        };
+  
+        console.log("Updated course after add:", updatedCourse);
+  
         dispatch(setCourse(updatedCourse));
+  
+        // Log course after dispatch (note: it may still show old state until next render)
+        console.log("Course in Redux after dispatch (may be outdated):", course);
+  
+        toast.success("Lecture added successfully");
+      }
+    } catch (error) {
+      console.error("Create subsection error:", error);
+      toast.error("Could not create lecture");
+    } finally {
+      setLoading(false);
+      setModal(null);
     }
-    
-    }
-    setLoading(false);
-    setModal(null);
-    
   }
-
- 
+  
   return (
     <div className="fixed  inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
       <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">

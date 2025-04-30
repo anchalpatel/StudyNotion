@@ -50,11 +50,11 @@ export const  getAverageRating = async(courseId) =>{
 
 
 export const getInsructorCourses = async(token) => {
-  console.log(token);
+  
     const toastId = toast.loading("Loading..");
     let courses = [];
     try{
-       
+      console.log("Priniting token",token);
         const responce = await apiConnector("GET", GET_ALL_INSTRUCTOR_COURSES_API, null, {
           Authorization: `Bearer${token}`,
         });
@@ -70,7 +70,7 @@ export const getInsructorCourses = async(token) => {
         console.log("Error occured in getting all courses");
         console.error(error);
         toast.error("Could not get courses");
-    }
+    }   
     toast.dismiss(toastId);
 
     return courses;

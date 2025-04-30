@@ -1,4 +1,5 @@
-const {instance} = require("../Configs/Razorpay");
+//const instance = require("../Configs/Razorpay");
+const Razorpay = require("razorpay")
 const User = require("../Models/User");
 const Cource = require("../Models/Cource");
 const CourseProgress = require("../Models/CourceProgress");
@@ -7,9 +8,19 @@ const { default: mongoose } = require("mongoose");
 const { courseEnrollmentEmail } = require("../templates/courseEnrollmentEmail");
 const { paymentSuccessEmail } = require("../templates/paymentSuccessEmail");
 const crypto = require("crypto")
+
+const instance = new Razorpay({
+    key_id: "rzp_test_gEREBntUWy5mmQ",
+    key_secret: "vhLJ0LxwyHPdPOFR9ORmvKbJ",
+  });
+  
 exports.capturePayment = async(req, res) => {
     const {courses} = req.body;
     const userId = req.user.id;
+
+    console.log("Instance type:",  instance); // should be 'object'
+console.log("Instance keys:", Object.keys(instance)); // should include 'orders'
+console.log("instance.orders:", instance.orders); 
 
     if(courses.length === 0) {
         return res.json({success:false, message:"Please provide Course Id"});
@@ -35,7 +46,7 @@ exports.capturePayment = async(req, res) => {
         }
         catch(error) {
             //console.log(error);
-            return res.status(500).json({success:false, message:error.message});
+            return res.status(500).json({success:false, message:error.message, error: error.message});
         }
     }
     
@@ -44,17 +55,18 @@ exports.capturePayment = async(req, res) => {
         currency : "INR",
         receipt: Math.random(Date.now()).toString(),
     }
-
+    
     try{
         const paymentResponse = await instance.orders.create(options);
+
         return res.json({
             success:true,
             message:paymentResponse,
         })
     }
     catch(error) {
-        //console.log(error);
-        return res.status(500).json({success:false, mesage:"Could not Initiate Order"});
+        console.log("Error while capturing payment",error);
+        return res.status(500).json({success:false, mesage:"Could not Initiate Order", error : error.message});
     }
 }
 
@@ -64,6 +76,7 @@ exports.verifyPayment = async(req, res)=> {
     const razorpay_signature = req.body?.razorpay_signature;
     const courses = req.body?.courses;
     const userId = req.user.id;
+    
 
     if(!razorpay_order_id ||
         !razorpay_payment_id ||
@@ -71,9 +84,11 @@ exports.verifyPayment = async(req, res)=> {
             return res.status(200).json({success:false, message:"Payment Failed"});
     }
 
+    
+
     let body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
-        .createHmac("sha256", process.env.RAZORPAY_SECRET)
+        .createHmac("sha256", process.env.RAZORPAY_SECRET || "vhLJ0LxwyHPdPOFR9ORmvKbJ")
         .update(body.toString())
         .digest("hex");
 

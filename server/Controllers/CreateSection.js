@@ -88,46 +88,55 @@ exports.updateSection = async (req, res) => {
 }
 
 exports.deleteSection = async (req, res) => {
-    try{
-        //fetch data from params
-        const {sectionId, courseId} = req.body;
-        const userId = req.user.id;
-        //delete data
-        const section = await Section.findById({_id : sectionId});
-
-        for(let subSection of section.subSections){
-            await CourseProgress.findByIdAndUpdate({courseId : courseId, userId : userId}, {
-                $pull : {
-                    completedVideos : {_id : subSection._id}
-                }
-            }, {new : true});
-            await SubSection.findByIdAndDelete({_id : subSection._id});    
-        }
-        const updatedSection = await Section.findByIdAndDelete({_id : sectionId});
-        //TODO : Do we need to delete the section id from the cource
-
-        const updatedCourse = await Cource.findByIdAndUpdate({_id:courseId}, {
-                                                                        $pull : {
-                                                                            courceContent : {_id : sectionId}
-                                                                        }
-                                                                    }, {new : true}).populate("courceContent").exec();
-
-        
-        //responce return
-        return res.status(200).json({
-            success : true,
-            message : "Section is deleted successfullty",
-            updatedSection,
-            updatedCourse
-        })
+    try {
+      const { sectionId, courseId } = req.body;
+      const userId = req.user.id;
+  
+      const section = await Section.findById(sectionId);
+      if (!section) {
+        return res.status(404).json({ success: false, message: "Section not found" });
+      }
+  
+      for (let subSection of section.subSections) {
+        await CourseProgress.findOneAndUpdate(
+          { courseId, userId },
+          {
+            $pull: {
+              completedVideos: { _id: subSection._id }
+            }
+          },
+          { new: true }
+        );
+        await SubSection.findByIdAndDelete(subSection._id);
+      }
+  
+      const updatedSection = await Section.findByIdAndDelete(sectionId);
+  
+      const updatedCourse = await Cource.findByIdAndUpdate(
+        courseId,
+        {
+          $pull: {
+            courceContent: { _id: sectionId }
+          }
+        },
+        { new: true }
+      )
+      .populate("courceContent")
+      .exec();
+  
+      return res.status(200).json({
+        success: true,
+        message: "Section deleted successfully",
+        updatedSection,
+        updatedCourse
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to delete section, please try again",
+        error: err.message
+      });
     }
-    catch(err){
-        console.error(err);
-        return res.status(500).json({
-            success : false,
-            message : "Failed to delete section, please try again",
-            error : err.message
-        })
-
-    }
-}
+  };
+  

@@ -31,7 +31,8 @@ export default function CoursesTable({ courses, setMyCourses }) {
   const handleCourseDelete = async (courseId) => {
     setLoading(true)
     await deleteCourse({ courseId: courseId }, token)
-    const result = await getInsructorCourses(user._id, token)
+    console.log("User id after delete course : ", user)
+    const result = await getInsructorCourses(token)
     if (result) {
       setMyCourses(result)
     }

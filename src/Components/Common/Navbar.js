@@ -106,7 +106,7 @@ function Navbar() {
         </div>
 
         <div className="flex gap-4 justify-center items-center">
-          {user && user.accountType != "Instructor" && (
+          {user && user.accountType == "Student" &&  (
             <button
               onClick={() => navigate("/dashboard/cart")}
               className="relative z-40"

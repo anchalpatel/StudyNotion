@@ -34,13 +34,13 @@ export const  getQuizResult = async(quizId, userId, token) =>{
   
   try{
       const response = await apiConnector("POST", GET_RESULT_QUIZ_API, {quizId, userId}, { Authorization : `Bearer${token}`});
-      console.log("After fetching categtory request by user");
+      console.log("After fetching quiz result");
       console.log(response.data);
 
       if(!response.data.success){
           throw new Error("Could not get category request created by user");
       }
-      toast.dismiss(toastId);
+      toast.dismiss(toastId);       
       return response.data;
 
   }catch(error){

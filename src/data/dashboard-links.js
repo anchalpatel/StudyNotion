@@ -56,13 +56,13 @@ export const sidebarLinks = [
     type : ACCOUNT_TYPE.ADMIN,
     icon : "VscRequestChanges"
   },
-  {
-    id : 9,
-    name : "Add Category",
-    path : "dashboard/createCategory",
-    type : ACCOUNT_TYPE.ADMIN,
-    icon : "VscAdd"
-  },
+  // {
+  //   id : 9,
+  //   name : "Add Category",
+  //   path : "dashboard/createCategory",
+  //   type : ACCOUNT_TYPE.ADMIN,
+  //   icon : "VscAdd"
+  // },
   {
     id : 10,
     name : "Category Requests",

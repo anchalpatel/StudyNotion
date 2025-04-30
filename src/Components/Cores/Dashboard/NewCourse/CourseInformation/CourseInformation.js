@@ -63,10 +63,10 @@ function CourseInformation() {
     }
     try {
       const result = await getQuizResult(selectedCategory.quiz, user.user._id, token);
-      console.log("Quiz result: ", result.data.result.isPassed);
-      
-      // Assuming result contains a pass/fail status
-      if (result && result.data.result.isPassed) {
+      const isPassed = result?.data?.result?.isPassed;
+      console.log("Quiz result: ", isPassed);
+  
+      if (isPassed === true) {
         setIsPass(true);
       } else {
         setIsPass(false);

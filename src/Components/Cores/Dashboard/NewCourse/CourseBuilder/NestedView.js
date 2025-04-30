@@ -27,58 +27,80 @@ function NestedView({handleChangeEdit}) {
     const [viewSubSection, setViewSubSection] = useState(null);
     const [confirmationModal,setConfirmationModal] = useState(null);
 
-    async function deleteSectionHandler(sectionId, courseId){
+    async function deleteSectionHandler(sectionId, courseId) {
         setLoading(true);
-        let result
-        try{
-            result = await deleteSection({sectionId,courseId}, token);
-        }catch(error){
-            console.error(error);
-            toast.error("Could not delete section");
+        try {
+          // 1. Make the API call to delete the section
+          const result = await deleteSection({ sectionId, courseId }, token);
+          console.log("Section deleted successfully!");
+      
+          // 2. Locally update the course content by removing the deleted section
+          const updatedCourseContent = course.courceContent.filter(
+            (section) => section._id !== sectionId
+          );
+      
+          // 3. Create the updated course structure
+          const updatedCourse = {
+            ...course,
+            courceContent: updatedCourseContent,
+          };
+      
+          // 4. Dispatch the updated course state to Redux
+          dispatch(setCourse(updatedCourse));
+          toast.success("Section deleted successfully");
+        } catch (error) {
+          console.error("Error deleting section:", error);
+          toast.error("Could not delete section");
+        } finally {
+          setLoading(false);
+          setConfirmationModal(null);
         }
+      }
+      
 
-        if(result){
-            const updatedCourse = result.updatedCourse;
-            dispatch(setCourse(updatedCourse));
-            console.log("Printing Course in responce : ", course);
-
-        }
-        setLoading(false);
-        setConfirmationModal(null);
-
-
-    }
-
-    async function deleteSubSectionHandler(subSectionId, sectionId){
+    async function deleteSubSectionHandler(subSectionId, sectionId) {
         setLoading(true);
-        let result;
-        try{
-            const sectionId1 = sectionId
-            const courseId = course._id
-            result = await deleteSubSection({subSectionId, sectionId1, courseId}, token);
-            console.log("Printing result after deleting subSection", result);
-
-
-        }catch(error){
-            console.error(error);
-            toast.error("Could not delete subsection");
-
+        try {
+          const courseId = course._id;
+      
+          // 1. Make the API call to delete the subsection
+          await deleteSubSection({ subSectionId, sectionId, courseId }, token);
+      
+          console.log("Subsection deleted successfully!");
+      
+          // 2. Locally update the course content by removing the deleted subsection
+          const updatedCourseContent = course.courceContent.map((section) => {
+            if (section._id === sectionId) {
+              // Filter out the deleted subsection by its ID
+              const updatedSubSections = section.subSections.filter(
+                (subSec) => subSec._id !== subSectionId
+              );
+              return {
+                ...section,
+                subSections: updatedSubSections,
+              };
+            }
+            return section;
+          });
+      
+          // 3. Create the updated course structure
+          const updatedCourse = {
+            ...course,
+            courceContent: updatedCourseContent,
+          };
+      
+          // 4. Dispatch the updated course state to Redux
+          dispatch(setCourse(updatedCourse));
+          toast.success("Lecture deleted successfully");
+        } catch (error) {
+          console.error("Error deleting subsection:", error);
+          toast.error("Could not delete subsection");
+        } finally {
+          setLoading(false);
+          setConfirmationModal(null);
         }
-        if(result){
-            console.log("Here");
-            const updatedCourseContent = course.courceContent.map( (section) => (section._id===sectionId ? result : section));
-            console.log(updatedCourseContent);
-            const updatedCourse = {...course, courceContent:updatedCourseContent}
-            console.log("update Course", updatedCourse);
-            dispatch(setCourse(updatedCourse));
-            console.log("Printing course after updating",course);
-            
-        }
-       
-        setLoading(false);
-        setConfirmationModal(null);
-
-    }
+      }
+      
 
   return (
     <div className='flex flex-col w-full mt-4 px-5 py-2 bg-richblack-700 rounded-md'>
