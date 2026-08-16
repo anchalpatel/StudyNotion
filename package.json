@@ -70,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/video-react": "^0.15.1",
     "tailwindcss": "^3.2.7"
   }
