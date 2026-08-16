@@ -1,4 +1,4 @@
-import { icons } from "react-icons";
+
 import { ACCOUNT_TYPE } from  "../Utils/Constants";
 export const sidebarLinks = [
   {

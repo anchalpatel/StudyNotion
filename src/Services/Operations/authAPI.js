@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux"
 import { apiConnector } from "../apiConnector";
 import { settingEndPosints } from "../apis";
 import { toast } from "react-hot-toast";

@@ -1,8 +1,7 @@
 import { toast } from "react-hot-toast"
 import { apiConnector } from "../apiConnector";
 import { settingEndPosints, profileEndpoints } from "../apis"; 
-import { setUser } from "../../Reducer/Slices/profileSlice";
-import { logout } from "./authAPI";
+
 const {
     UPDATE_DISPLAYPICTURE_API, 
     UPDATE_PROFILE_API,

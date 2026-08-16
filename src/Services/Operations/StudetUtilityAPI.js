@@ -75,20 +75,25 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
     toast.dismiss(toastId);
 }
 
-async function sendPaymentSuccessfullemail(responce,amount, token)
+async function sendPaymentSuccessfullemail(responce, amount, token)
 {
-    try{
+    try {
+        await apiConnector(
+            "POST",
+            SEND_PAYMENT_SUCCESS_EMAIL_API,
+            {
+                orderId: responce.razorpay_order_id,
+                paymentId: responce.razorpay_payment_id,
+                amount: amount
+            },
+            {
+                Authorization: `Bearer${token}`
+            }
+        );
 
-        const res = await apiConnector("POST", SEND_PAYMENT_SUCCESS_EMAIL_API, {
-            orderId : responce.razorpay_order_id,
-            paymentId : responce.razorpay_payment_id,
-            amount : amount
-        }, {Authorization : `Bearer${token}`});
-
-    }catch(error){
+    } catch (error) {
         console.log("Error occured in payment successfull email api");
-        console.error(error)
-
+        console.error(error);
     }
 }
 
