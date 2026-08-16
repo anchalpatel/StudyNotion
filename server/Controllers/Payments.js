@@ -54,6 +54,7 @@ console.log("instance.orders:", instance.orders);
         amount: totalAmount * 100,
         currency : "INR",
         receipt: Math.random(Date.now()).toString(),
+        payment_capture: 1
     }
     
     try{

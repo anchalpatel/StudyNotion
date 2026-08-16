@@ -65,7 +65,7 @@ border-radius: 500px; hover:scale-95 text-richblack-200 transition-all duration-
           heading={
             <div className='text-3xl font-semibold'>
               Unlock your 
-              <HilightedText text={"coading potential"}></HilightedText> with our online courses
+              <HilightedText text={"coding potential"}></HilightedText> with our online courses
             </div>
           }
 
@@ -108,13 +108,13 @@ border-radius: 500px; hover:scale-95 text-richblack-200 transition-all duration-
 
           heading={
             <div className='text-3xl font-semibold'>
-              Unlock your 
-              <HilightedText text={"coading potential"}></HilightedText> with our online courses
+              Start 
+              <HilightedText text={"coading potential"}></HilightedText> coding in seconds
             </div>
           }
 
           subheading={
-            "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+            "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
           }
 
           content1={
